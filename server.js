@@ -14,7 +14,7 @@ const server = http.createServer(app);
 
 // สร้าง Socket.io server จาก HTTP server
 const io = new Server(server);
-const PORT = 3000;
+
 // Middlewares
 app.use(bodyParser.json());
 app.use(cors());
@@ -210,7 +210,7 @@ app.post('/save-profile', async (req, res) => {
     }
 });
 
-
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+const PORT = process.env.PORT || 3000; // ใช้ port ของ Render หรือ fallback เป็น 3000
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
