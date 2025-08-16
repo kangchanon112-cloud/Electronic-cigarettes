@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
 
+
 // สร้าง Express app
 const app = express();
 
@@ -14,12 +15,18 @@ const server = http.createServer(app);
 
 // สร้าง Socket.io server จาก HTTP server
 const io = new Server(server);
-
 // Middlewares
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static('view'));
-app.use('/public', express.static('public'));
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'view')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 
 // เชื่อม MongoDB
 mongoose.connect('mongodb+srv://test:099227@test.jcccez1.mongodb.net/?retryWrites=true&w=majority&appName=test', {
@@ -210,7 +217,14 @@ app.post('/save-profile', async (req, res) => {
     }
 });
 
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'view', 'index.html'));
+});
+
+
+
 const PORT = process.env.PORT || 3000; // ใช้ port ของ Render หรือ fallback เป็น 3000
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
