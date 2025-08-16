@@ -8,7 +8,7 @@ export const questions = [
   {
     id: 'q2',
     question: 'นิโคตินมีผลต่อเด็กและวัยรุ่นอย่างไร?',
-    correctAnswer: "ส่งผลต่อพัฒนาการทางสมอง"
+    correctAnswer: "สมอง"
   },
   {
     id: 'q3',
