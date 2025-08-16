@@ -1,5 +1,5 @@
 ///////////////////////////// เริ่มต้นแสดง section1//////////////////////////
-document.getElementById('section0').classList.add('active');
+document.getElementById('section1').classList.add('active');
 
 // ไฮไลท์ปุ่มที่เลือก
 const answerButtons = document.querySelectorAll('#section8 .answer-btn');
@@ -88,7 +88,15 @@ document.addEventListener('DOMContentLoaded', function () {
   setupNextButton('nextBtn2', 'section2', 'section3');
   setupNextButton('nextBtn3', 'section5', 'section6');
   setupNextButton('nextBtn4', 'section6', 'section7');
-  setupNextButton('nextBtn5', 'section7', 'section8');
+ 
+});
+
+document.getElementById('nextBtn5').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('section7').classList.remove('active');
+
+  // ถ้า section7 ให้ไปหน้า quiz.html
+  window.location.href = "quiz.html";
 });
 
 
@@ -282,6 +290,6 @@ document.getElementById('nextBtn4').addEventListener('click', (e) => {
 document.getElementById('nextBtn5').addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('section7').classList.remove('active');
-  // ถัดไป section8 ถ้ามี
-  document.getElementById('section8')?.classList.add('active');
+  // ไปหน้า quiz.html แทน section8
+  window.location.href = "quiz.html";
 });
