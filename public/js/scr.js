@@ -1,5 +1,5 @@
 ///////////////////////////// เริ่มต้นแสดง section1//////////////////////////
-document.getElementById('section1').classList.add('active');
+document.getElementById('section0').classList.add('active');
 
 // ไฮไลท์ปุ่มที่เลือก
 const answerButtons = document.querySelectorAll('#section8 .answer-btn');
