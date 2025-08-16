@@ -38,27 +38,43 @@
             pointer-events: auto;
         }
 
+        /* กรอบ input คำตอบ */
+        .answers input.answer-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .answers input.answer-input:focus {
+            border-color: #6b4f3f;
+            box-shadow: 0 4px 12px rgba(107, 79, 63, 0.2);
+        }
+
+        /* ปุ่มส่งคำตอบ */
         .answers button {
             padding: 12px;
             font-size: 16px;
             border: none;
-            border-radius: 8px;
-            background-color: #f5e6d3;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            background-color: #6b4f3f;
+            color: #fff;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: #6b4f3f;
-            font-weight: 500;
+            width: 100%;
         }
 
         .answers button:hover {
-            background-color: #edd9b5;
+            background-color: #8b674e;
             transform: translateY(-2px);
-        }
-
-        .answers button.selected {
-            background-color: #cde7c1;
-            box-shadow: 0 2px 6px rgba(0, 128, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(107, 79, 63, 0.2);
         }
 
         /* Popup แสดงถูก/ผิด */
@@ -81,12 +97,10 @@
             display: block;
             opacity: 1;
             animation: popupBounce 0.5s ease forwards;
-            /* forwards = ค้างหลัง animation จบ */
         }
 
         .popup img {
             max-width: 300px;
-            /* ปรับขนาดตามต้องการ */
         }
 
         @keyframes popupBounce {
@@ -109,7 +123,6 @@
             margin-top: 10px;
             text-align: center;
             display: none;
-            /* ซ่อนไว้ก่อน */
         }
     </style>
 </head>
@@ -158,16 +171,8 @@
                 submitAnswer(q, input.value.trim(), btn);
             };
             answersDiv.appendChild(btn);
-
-
         }
 
-
-        function isAnswerCorrect(userAnswer) {
-            const ua = userAnswer.trim().toLowerCase();
-            const keywords = ["พัฒนาการ", "สมอง"]; 
-            return keywords.every(k => ua.includes(k));
-        }
         function submitAnswer(q, userAnswer, btn) {
             const errorMsg = document.getElementById("errorMsg");
 
@@ -177,6 +182,7 @@
                 return;
             }
             answeredCurrentQuestion = true;
+            errorMsg.style.display = "none";
 
             // เก็บคำตอบ
             const index = answers.findIndex(a => a.question === q.question);
@@ -196,22 +202,40 @@
 
             // ✅ ตรวจคำตอบถูก/ผิด
             const isCorrect = userAnswer.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase();
-
             showResultPopup(isCorrect);
         }
-
-
+        // หลังจากแสดง popup ผลคำตอบ
         function showResultPopup(isCorrect) {
             popupImg.src = isCorrect ? '/public/img/5.png' : '/public/img/4.png';
-
             popup.classList.remove('show');
-            void popup.offsetWidth; // รีเซ็ต animation
+            void popup.offsetWidth;
             popup.classList.add('show');
 
             setTimeout(() => {
                 popup.classList.remove('show');
-
                 answeredCurrentQuestion = false;
+
+                // เก็บคะแนนใน localStorage
+                if (!localStorage.getItem('quizScore')) localStorage.setItem('quizScore', 0);
+                let score = parseInt(localStorage.getItem('quizScore'));
+                if (isCorrect) score += 1;
+                localStorage.setItem('quizScore', score);
+
+                // ส่งคะแนนไป server (เมื่อทำข้อสุดท้ายเสร็จ)
+                if (currentQuestionIndex === questions.length - 1) {
+                    const userId = localStorage.getItem('userId'); // ต้องได้จาก login/register
+                    if (userId) {
+                        fetch('/submit-score', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ userId, score })
+                        })
+                            .then(res => res.json())
+                            .then(data => console.log('Score saved:', data))
+                            .catch(err => console.error(err));
+                    }
+                }
+
                 if (currentQuestionIndex < questions.length - 1) {
                     currentQuestionIndex++;
                     renderQuestion();
@@ -221,24 +245,6 @@
             }, 2000);
         }
 
-
-
-
-        // คลิกพื้นที่ว่างเพื่อไปข้อถัดไป
-        // document.body.addEventListener('click', (e) => {
-        //     if (e.target.tagName !== 'BUTTON') {
-        //         if (answeredCurrentQuestion) {
-        //             answeredCurrentQuestion = false;
-
-        //             if (currentQuestionIndex < questions.length - 1) {
-        //                 currentQuestionIndex++;
-        //                 renderQuestion();
-        //             } else {
-        //                 window.location.href = 'part1.html#section8';
-        //             }
-        //         }
-        //     }
-        // });
 
         renderQuestion();
     </script>
