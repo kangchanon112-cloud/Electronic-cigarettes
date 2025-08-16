@@ -167,16 +167,19 @@ app.post('/submit-score', async (req, res) => {
     }
 
     try {
-        const newScore = new Score({
-            userId: new mongoose.Types.ObjectId(userId),
-            score: numericScore
-        });
-        await newScore.save();
+        // update score ครั้งล่าสุด หรือสร้างใหม่ถ้ายังไม่มี
+        await Score.findOneAndUpdate(
+            { userId: new mongoose.Types.ObjectId(userId) },
+            { score: numericScore, date: new Date() },
+            { upsert: true, new: true }
+        );
+
         res.json({ success: true, message: 'บันทึกคะแนนเรียบร้อย!' });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
 });
+
 
 
 // Get latest score
