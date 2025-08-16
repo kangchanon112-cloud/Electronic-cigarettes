@@ -20,12 +20,13 @@
             /* จัดกลางแนวนอน */
             min-height: 100vh;
         }
-.quiz-container {
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-    padding: 20px;
-}
+
+        .quiz-container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
 
         h1 {
             margin: 20px 0;
@@ -36,52 +37,50 @@
         }
 
         .answers {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 80%;
-            max-width: 400px;
-            pointer-events: auto;
-        }
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;  
+    width: 100%;
+    max-width: 400px;   /* ✅ จำกัดความกว้าง */
+    margin: 0 auto;     /* ✅ จัดให้อยู่กลาง */
+    pointer-events: auto;
+}
 
-        /* กรอบ input คำตอบ */
-        .answers input.answer-input {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: all 0.2s ease;
-            background-color: #fff;
-            color: #333;
-        }
+/* input คำตอบ */
+.answers input.answer-input {
+    width: 100%;       /* ✅ เต็มกรอบ .answers */
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    background-color: #fff;
+    color: #333;
+}
 
-        .answers input.answer-input:focus {
-            border-color: #6b4f3f;
-            box-shadow: 0 4px 12px rgba(107, 79, 63, 0.2);
-        }
+/* ปุ่มส่งคำตอบ */
+.answers button {
+    width: 100%;       /* ✅ ให้กว้างเท่ากับ input */
+    max-width: 200px;  /* แต่ไม่เกิน 200px จะดูบาลานซ์ */
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: #6b4f3f;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-        /* ปุ่มส่งคำตอบ */
-        .answers button {
-            padding: 12px;
-            font-size: 16px;
-            border: none;
-            border-radius: 12px;
-            background-color: #6b4f3f;
-            color: #fff;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .answers button:hover {
-            background-color: #8b674e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(107, 79, 63, 0.2);
-        }
+.answers button:hover {
+    background-color: #8b674e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(107, 79, 63, 0.2);
+}
 
         /* Popup แสดงถูก/ผิด */
         .popup {
@@ -135,13 +134,14 @@
 
 <body>
     <div class="quiz-container">
-    <h1>Quiz</h1>
-    <div class="answers"></div>
-    <div id="errorMsg" class="error"></div>
+        <h1>Quiz</h1>
+        <div class="answers"></div>
+        <div id="errorMsg" class="error"></div>
 
-    <!-- Popup แสดงผล -->
-    <div id="popupResult" class="popup">
-      <img id="popupImg" src="" alt="result">
+        <!-- Popup แสดงผล -->
+        <div id="popupResult" class="popup">
+            <img id="popupImg" src="" alt="result">
+        </div>
     </div>
 
     <script type="module">
