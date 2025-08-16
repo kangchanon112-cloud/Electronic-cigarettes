@@ -4,22 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz 18 คำถาม</title>
+    <title>Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            padding: 40px;
+            padding: 0;
             font-family: 'Prompt', sans-serif;
             background-color: #fbdfc7;
             color: #333;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            /* จัดกลางแนวตั้ง */
             align-items: center;
+            /* จัดกลางแนวนอน */
             min-height: 100vh;
-            cursor: pointer;
-            height: 100vh;
         }
+.quiz-container {
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
 
         h1 {
             margin: 20px 0;
@@ -128,13 +134,14 @@
 </head>
 
 <body>
+    <div class="quiz-container">
     <h1>Quiz</h1>
     <div class="answers"></div>
     <div id="errorMsg" class="error"></div>
 
     <!-- Popup แสดงผล -->
     <div id="popupResult" class="popup">
-        <img id="popupImg" src="" alt="result">
+      <img id="popupImg" src="" alt="result">
     </div>
 
     <script type="module">
@@ -173,6 +180,19 @@
             answersDiv.appendChild(btn);
         }
 
+        function isAnswerCorrect(userAnswer, correctAnswer) {
+            const ua = userAnswer.trim().toLowerCase();
+            const ca = correctAnswer.trim().toLowerCase();
+
+            // 1) ถ้าตรงเป๊ะ → ถูก
+            if (ua === ca) return true;
+
+            // 2) ตรวจแบบมี keyword หลัก
+            const keywords = ca.split(" "); // แตก correctAnswer เป็นคำ ๆ
+            return keywords.some(k => ua.includes(k)); // ถ้ามีคำใดคำหนึ่งก็ถือว่าถูก
+        }
+
+
         function submitAnswer(q, userAnswer, btn) {
             const errorMsg = document.getElementById("errorMsg");
 
@@ -201,7 +221,8 @@
             }
 
             // ✅ ตรวจคำตอบถูก/ผิด
-            const isCorrect = userAnswer.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase();
+            const isCorrect = isAnswerCorrect(userAnswer, q.correctAnswer);
+
             showResultPopup(isCorrect);
         }
         // หลังจากแสดง popup ผลคำตอบ
