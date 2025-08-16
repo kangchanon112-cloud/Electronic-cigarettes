@@ -188,14 +188,14 @@
 
  .bg2 img {
    position: absolute;
-   max-width: 8rem;
+   max-width: 7.7rem;
    /* ป้องกันรูปใหญ่เกิน */
    height: auto;
  }
 
  .img1 {
    left: 0%;
-   top: 60%;
+   top: 70%;
    transform: translateY(-50%);
    animation: bounce1 4s ease-in-out infinite;
  }
